@@ -1,6 +1,6 @@
 
 
-from PyInquirer import style_from_dict, Token, prompt, Separator
+from PyInquirer import style_from_dict, Token, prompt
 
 style = style_from_dict({
     Token.QuestionMark: '#E91E63 bold',
@@ -9,8 +9,6 @@ style = style_from_dict({
     Token.Answer: '#2196f3 bold',
     Token.Question: '',
 })
-
-
 
 
 def general_question():
@@ -30,6 +28,7 @@ def general_question():
     ]
     answer = prompt(question, style=style)
     return answer['general']
+
 
 # TODO find a way to repeate until confirm = False
 def continue_confirm():
