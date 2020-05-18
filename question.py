@@ -21,8 +21,8 @@ def general_question():
             'message': 'What do you want to do?',
             'choices': [
                 'Register income/expense',
-                'Current month overview',
-                'Current year overview',
+                'Month overview',
+                'Year overview',
                 'Query DB',
                 'Search in comments',
             ]
@@ -43,8 +43,7 @@ def continue_confirm():
     ]
 
     answer = prompt(confirm, style=style)
-    if answer.get('continue') == True:
-        general_question()
+    return answer['continue']
 
 
 def get_query_type():
@@ -86,6 +85,28 @@ def get_tags():
     return answer['taglist']
 
 
+def get_tag_one():
+    question = [
+        {
+            'type': 'list',
+            'name': 'tag',
+            'message': 'Pick a tag',
+            'choices': [
+                {'name': 'consumable'},
+                {'name': 'experience'},
+                {'name': 'food'},
+                {'name': 'income'},
+                {'name': 'regular'},
+                {'name': 'things'},
+                {'name': 'transport'},
+                {'name': 'other'}
+            ]
+        },
+    ]
+    answer = prompt(question, style=style)
+    return answer['tag']
+
+
 def get_month():
     question = [
         {
@@ -111,6 +132,33 @@ def get_month():
     answer = prompt(question, style=style)
     return answer['monthlist']
 
+
+def get_one_month():
+    question = [
+        {
+            'type': 'list',
+            'name': 'onemonthlist',
+            'message': 'Pick the month',
+            'choices': [
+                {'name': '1'},
+                {'name': '2'},
+                {'name': '3'},
+                {'name': '4'},
+                {'name': '5'},
+                {'name': '6'},
+                {'name': '7'},
+                {'name': '8'},
+                {'name': '9'},
+                {'name': '10'},
+                {'name': '11'},
+                {'name': '12'},
+            ]
+        },
+    ]
+    answer = prompt(question, style=style)
+    return answer['onemonthlist']
+
+
 def get_year():
     question = [
         {
@@ -130,15 +178,63 @@ def get_year():
     return answer['yearlist']
 
 
-# def get_amount():
-#     question = [
-#         {
-#             'type': 'input',
-#             'name': 'amount',
-#             'message': 'Input amount +/-',
-#             'validate': IntegerValidator
-#         }
-#     ]
+def get_one_year():
+    question = [
+        {
+            'type': 'list',
+            'name': 'oneyearlist',
+            'message': 'Pick the year',
+            'choices': [
+                {'name': '2020'},
+                {'name': '2021'},
+                {'name': '2022'},
+                {'name': '2023'},
+                {'name': '2024'},
+            ]
+        },
+    ]
+    answer = prompt(question, style=style)
+    return answer['oneyearlist']
 
-#     answer = prompt(question, style=style)
-#     return answer['amount']
+
+def get_amount():
+    question = [
+        {
+            'type': 'input',
+            'name': 'amount',
+            'message': 'Input amount +/-',
+            # 'validate': IntegerV alidator
+        }
+    ]
+
+    answer = prompt(question, style=style)
+    return answer['amount']
+
+
+def get_comment():
+    question = [
+        {
+            'type': 'input',
+            'name': 'comment',
+            'message': 'Write a comment',
+        }
+    ]
+
+    answer = prompt(question, style=style)
+    return answer['comment']
+
+
+def get_month_save():
+    question = [
+        {
+            'type': 'list',
+            'name': 'month',
+            'message': 'Pick the year',
+            'choices': [
+                {'name': 'this month'},
+                {'name': 'last month'},
+            ]
+        },
+    ]
+    answer = prompt(question, style=style)
+    return answer['month']
