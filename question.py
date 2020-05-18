@@ -69,7 +69,7 @@ def get_tags():
         {
             'type': 'checkbox',
             'name': 'taglist',
-            'message': 'Pick tags',
+            'message': 'Pick tag',
             'choices': [
                 {'name': 'consumable'},
                 {'name': 'experience'},
@@ -128,3 +128,17 @@ def get_year():
     ]
     answer = prompt(question, style=style)
     return answer['yearlist']
+
+
+# def get_amount():
+#     question = [
+#         {
+#             'type': 'input',
+#             'name': 'amount',
+#             'message': 'Input amount +/-',
+#             'validate': IntegerValidator
+#         }
+#     ]
+
+#     answer = prompt(question, style=style)
+#     return answer['amount']
