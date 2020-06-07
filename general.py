@@ -204,9 +204,9 @@ def register():
     comment = get_comment()
     month = get_month_save()
 
+    input_date = date.today()
     if month == 'last month':
         input_date = date.today().replace(day=1) - timedelta(1)
-    input_date = date.today()
 
     Balance(
         amount=amount,
