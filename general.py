@@ -17,6 +17,7 @@ from question import (
     get_amount,
     get_month_save,
     get_comment,
+    confirm_entry,
 )
 
 from model import (
@@ -200,7 +201,7 @@ def query_db():
 
 def register():
     tag = get_tag_one()
-    amount = int(get_amount())
+    amount = get_amount()
     comment = get_comment()
     month = get_month_save()
 
@@ -208,9 +209,12 @@ def register():
     if month == 'last month':
         input_date = date.today().replace(day=1) - timedelta(1)
 
-    Balance(
-        amount=amount,
-        tag=tag,
-        comment=comment,
-        date=input_date
-    ).save()
+    register = confirm_entry()
+
+    if register is True:
+        Balance(
+            amount=amount,
+            tag=tag,
+            comment=comment,
+            date=input_date
+        ).save()

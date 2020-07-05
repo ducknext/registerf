@@ -1,6 +1,7 @@
 
 
 from PyInquirer import style_from_dict, Token, prompt
+from PyInquirer import Validator, ValidationError
 
 style = style_from_dict({
     Token.QuestionMark: '#E91E63 bold',
@@ -9,6 +10,16 @@ style = style_from_dict({
     Token.Answer: '#2196f3 bold',
     Token.Question: '',
 })
+
+
+class NumberValidator(Validator):
+    def validate(self, document):
+        try:
+            int(document.text)
+        except ValueError:
+            raise ValidationError(
+                message='Please enter a number',
+                cursor_position=len(document.text))
 
 
 def general_question():
@@ -45,6 +56,20 @@ def continue_confirm():
     return answer['continue']
 
 
+def confirm_entry():
+    confirm = [
+        {
+            'type': 'confirm',
+            'message': 'Do you want to save this entry?',
+            'name': 'save_entry',
+            'default': True,
+        },
+    ]
+
+    answer = prompt(confirm, style=style)
+    return answer['save_entry']
+
+
 def get_query_type():
     question = [
         {
@@ -54,7 +79,7 @@ def get_query_type():
             'choices': [
                 'tag',
                 'month-year',
-                'tag-month-year'
+                'tag-month-year',
             ]
         },
     ]
@@ -76,7 +101,7 @@ def get_tags():
                 {'name': 'regular'},
                 {'name': 'things'},
                 {'name': 'transport'},
-                {'name': 'other'}
+                {'name': 'other'},
             ]
         },
     ]
@@ -98,7 +123,7 @@ def get_tag_one():
                 {'name': 'regular'},
                 {'name': 'things'},
                 {'name': 'transport'},
-                {'name': 'other'}
+                {'name': 'other'},
             ]
         },
     ]
@@ -202,7 +227,8 @@ def get_amount():
             'type': 'input',
             'name': 'amount',
             'message': 'Input amount +/-',
-            # 'validate': IntegerV alidator
+            'validate': NumberValidator,
+            'filter': lambda val: int(val)
         }
     ]
 
