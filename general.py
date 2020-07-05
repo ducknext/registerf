@@ -18,6 +18,7 @@ from question import (
     get_month_save,
     get_comment,
     confirm_entry,
+    get_phrase,
 )
 
 from model import (
@@ -25,15 +26,26 @@ from model import (
     query_tag,
     query_month_year,
     query_month_year_tag,
+    query_comments,
 )
 
 
 def print_table(result):
+    print('length is =', len(result))
     j = 0
     while j < len(result):
         for i in result[j]:
             print("{:<15} {:<8} {:<40} {:<}"
                   .format(i['tag'], i['amount'], i['comment'], str(i['date'])))
+        j = j + 1
+
+
+def print_table_2(result):
+    j = 0
+    while j < len(result):
+        print("{:<15} {:<8} {:<40} {:<}"
+              .format(result[j]['tag'], result[j]['amount'],
+                      result[j]['comment'], str(result[j]['date'])))
         j = j + 1
 
 
@@ -218,3 +230,25 @@ def register():
             comment=comment,
             date=input_date
         ).save()
+
+
+def search_comment():
+    phrase = get_phrase()
+
+    print("{:<15} {:<8} {:<40} {:<}"
+          .format('Tag', 'Amount', 'Comment', 'Date'))
+
+    result = query_comments(phrase)
+    print_table_2(result)
+
+    print('Sum for choosen is {}'
+          .format(get_comment_sum(result)))
+
+
+def get_comment_sum(result):
+    comment_sum = 0
+    j = 0
+    while j < len(result):
+        comment_sum = comment_sum + int(result[j]['amount'])
+        j = j + 1
+    return comment_sum

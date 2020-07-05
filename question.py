@@ -263,3 +263,16 @@ def get_month_save():
     ]
     answer = prompt(question, style=style)
     return answer['month']
+
+
+def get_phrase():
+    question = [
+        {
+            'type': 'input',
+            'name': 'phrase',
+            'message': 'Phrase to search for',
+        }
+    ]
+
+    answer = prompt(question, style=style)
+    return answer['phrase']
