@@ -6,6 +6,7 @@ db = SqliteDatabase('balance.db')
 
 
 class Balance(Model):
+    id = CharField()
     amount = CharField()
     tag = CharField()
     comment = CharField()
@@ -22,6 +23,7 @@ def query_tag(tag):
     result = []
     for r in Balance.select().where(Balance.tag == tag):
         result.append(dict(
+            id=r.id,
             amount=r.amount,
             tag=r.tag,
             comment=r.comment,
@@ -35,6 +37,7 @@ def query_month_year(month, year):
     for r in Balance.select().where(Balance.date.month == month,
                                     Balance.date.year == year):
         result.append(dict(
+            id=r.id,
             amount=r.amount,
             tag=r.tag,
             comment=r.comment,
@@ -49,6 +52,7 @@ def query_month_year_tag(month, year, tag):
                                     Balance.date.year == year,
                                     Balance.tag == tag):
         result.append(dict(
+            id=r.id,
             amount=r.amount,
             tag=r.tag,
             comment=r.comment,
@@ -63,6 +67,7 @@ def query_comments(phrase):
 
         if query.comment.find(phrase) != -1:
             result.append(dict(
+                id=query.id,
                 amount=query.amount,
                 tag=query.tag,
                 comment=query.comment,

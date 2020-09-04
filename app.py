@@ -12,6 +12,8 @@ from general import (
     register,
     year_overview,
     month_overview,
+    search_comment,
+    edit_entry,
 )
 
 
@@ -34,7 +36,10 @@ while keep_going is True:
         query_db()
 
     if general == 'Search in comments':
-        print('not yet done')
+        search_comment()
+
+    if general == 'Edit an entry':
+        edit_entry()
 
     keep_going = continue_confirm()
 

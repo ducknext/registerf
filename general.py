@@ -17,7 +17,9 @@ from question import (
     get_amount,
     get_month_save,
     get_comment,
+    get_entry_id,
     confirm_entry,
+    confirm_delete,
     get_phrase,
 )
 
@@ -35,16 +37,16 @@ def print_table(result):
     j = 0
     while j < len(result):
         for i in result[j]:
-            print("{:<15} {:<8} {:<40} {:<}"
-                  .format(i['tag'], i['amount'], i['comment'], str(i['date'])))
+            print("{:<15} {:<15} {:<8} {:<40} {:<}"
+                  .format(i['id'], i['tag'], i['amount'], i['comment'], str(i['date'])))
         j = j + 1
 
 
 def print_table_2(result):
     j = 0
     while j < len(result):
-        print("{:<15} {:<8} {:<40} {:<}"
-              .format(result[j]['tag'], result[j]['amount'],
+        print("{:<15} {:<15} {:<8} {:<40} {:<}"
+              .format(result[j]['id'], result[j]['tag'], result[j]['amount'],
                       result[j]['comment'], str(result[j]['date'])))
         j = j + 1
 
@@ -175,8 +177,8 @@ def query_db():
     if answer == 'tag':
         tags = get_tags()
 
-        print("{:<15} {:<8} {:<40} {:<}"
-              .format('Tag', 'Amount', 'Comment', 'Date'))
+        print("{:<15} {:<15} {:<8} {:<40} {:<}"
+              .format('ID', 'Tag', 'Amount', 'Comment', 'Date'))
 
         result = get_tag_query(tags)
         print_table(result)
@@ -187,8 +189,8 @@ def query_db():
         months = get_month()
         years = get_year()
 
-        print("{:<15} {:<8} {:<40} {:<}"
-              .format('Tag', 'Amount', 'Comment', 'Date'))
+        print("{:<15} {:<15} {:<8} {:<40} {:<}"
+              .format('ID', 'Tag', 'Amount', 'Comment', 'Date'))
 
         result = get_month_year_query(years, months)
         print_table(result)
@@ -201,8 +203,8 @@ def query_db():
         months = get_month()
         years = get_year()
 
-        print("{:<15} {:<8} {:<40} {:<}"
-              .format('Tag', 'Amount', 'Comment', 'Date'))
+        print("{:<15} {:<15} {:<8} {:<40} {:<}"
+              .format('ID', 'Tag', 'Amount', 'Comment', 'Date'))
 
         result = get_month_year_tag_query(years, months, tags)
         print_table(result)
@@ -235,8 +237,8 @@ def register():
 def search_comment():
     phrase = get_phrase()
 
-    print("{:<15} {:<8} {:<40} {:<}"
-          .format('Tag', 'Amount', 'Comment', 'Date'))
+    print("{:<15} {:<15} {:<8} {:<40} {:<}"
+          .format('ID', 'Tag', 'Amount', 'Comment', 'Date'))
 
     result = query_comments(phrase)
     print_table_2(result)
@@ -252,3 +254,41 @@ def get_comment_sum(result):
         comment_sum = comment_sum + int(result[j]['amount'])
         j = j + 1
     return comment_sum
+
+
+def edit_entry():
+    entry_id = get_entry_id()
+
+    entry = Balance.get_or_none(Balance.id == entry_id)
+    if entry is None:
+        print("Not an entry")
+    else:
+        result = []
+        result.append(dict(
+            id=entry.id,
+            amount=entry.amount,
+            tag=entry.tag,
+            comment=entry.comment,
+            date=entry.date,
+        ))
+
+        print("{:<15} {:<15} {:<8} {:<40} {:<}"
+              .format('ID', 'Tag', 'Amount', 'Comment', 'Date'))
+        print_table_2(result)
+
+        delete = confirm_delete()
+        if delete is not True:
+            entry.delete_instance()
+        else:
+            tag = get_tag_one()
+            amount = get_amount()
+            comment = get_comment()
+
+            register = confirm_entry()
+
+            if register is True:
+                entry.amount = amount
+                entry.tag = tag
+                entry.comment = comment
+                entry.date = entry.date
+                entry.save()

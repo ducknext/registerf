@@ -34,6 +34,7 @@ def general_question():
                 'Year overview',
                 'Query DB',
                 'Search in comments',
+                'Edit an entry',
             ]
         },
     ]
@@ -68,6 +69,20 @@ def confirm_entry():
 
     answer = prompt(confirm, style=style)
     return answer['save_entry']
+
+
+def confirm_delete():
+    delete = [
+        {
+            'type': 'confirm',
+            'message': 'Do you want to edit (Yes) or delete (no) this entry?',
+            'name': 'delete_entry',
+            'default': True,
+        },
+    ]
+
+    answer = prompt(delete, style=style)
+    return answer['delete_entry']
 
 
 def get_query_type():
@@ -276,3 +291,16 @@ def get_phrase():
 
     answer = prompt(question, style=style)
     return answer['phrase']
+
+
+def get_entry_id():
+    question = [
+        {
+            'type': 'input',
+            'name': 'entry_id',
+            'message': 'Write the entry id',
+        }
+    ]
+
+    answer = prompt(question, style=style)
+    return answer['entry_id']
